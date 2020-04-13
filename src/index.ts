@@ -1,0 +1,81 @@
+import { Options, Deferred, CanvasElement, MediaRecorderEvent } from './type';
+
+declare var MediaRecorder: any;
+
+const defaultOptions: Partial<Options> = {
+  mimeType: 'video/webm',
+  outVideoType: 'mp4'
+}
+
+export class Canvas2Video {
+  config: Options;
+  deferred: Deferred;
+  recorder: any;
+  constructor(config: Options) {
+    this.config = Object.assign({}, defaultOptions, config);
+  }
+  startRecord() {
+    const deferred: Deferred = {};
+    deferred.promise = new Promise((resolve, reject) => {
+      deferred.resolve = resolve;
+      deferred.reject = reject;
+    })
+    this.deferred = deferred;
+    const stream = (<CanvasElement>this.config.canvas).captureStream();
+    const recorder = new MediaRecorder(stream, { mimeType: this.config.mimeType });
+    const data: any[] = [];
+    recorder.ondataavailable = function (event: MediaRecorderEvent) {
+      if (event.data && event.data.size) {
+        data.push(event.data);
+      }
+    };
+    recorder.onstop = () => {
+      const url = URL.createObjectURL(new Blob(data, { type: "video/webm" }));
+      this.deferred.resolve(url);
+    };
+    recorder.start();
+    this.recorder = recorder;
+  }
+  stopRecord() {
+    this.recorder.stop();
+  }
+  /**
+   * merge audio and convert video type
+   * @param url 
+   */
+  private async convertVideoUrl(url: string) {
+    const { audio, outVideoType, mimeType } = this.config;
+    const { createWorker } = window.FFmpeg;
+    const worker = createWorker(this.config);
+    await worker.load();
+    const type = mimeType.split('/')[1];
+    await worker.write(`video.${type}`, url);
+
+    if (audio) {
+      const audioType = audio.split('.').pop();
+      await worker.write(`1.${audioType}`, audio);
+      await worker.run(`-i video.${type} -i 1.${audioType} -c:v copy -c:a aac -strict experimental -shortest out.${outVideoType}`)
+    } else {
+      if (type !== outVideoType) {
+        await worker.run(`-i video.${type} video.${outVideoType}`);
+      }
+    }
+    const { data } = await worker.read(`out.${outVideoType}`);
+    const blob = new Blob([data], { type: `video/${outVideoType}` })
+    const mp4Url = URL.createObjectURL(blob);
+    await worker.terminate();
+    return mp4Url;
+  }
+  async getStreamURL() {
+    const url = await this.deferred.promise;
+    const { mimeType, audio, outVideoType } = this.config;
+    if (mimeType === `video/${outVideoType}` && !audio) {
+      return url;
+    }
+    if (!window.FFmpeg) {
+      const err = new Error('please load FFmpeg script file like `https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js`');
+      return Promise.reject(err);
+    }
+    return this.convertVideoUrl(url);
+  }
+}

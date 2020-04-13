@@ -1,0 +1,26 @@
+{
+  "name": "canvas2video",
+  "version": "1.0.0",
+  "description": "Convert dynamic canvas to video, support merge audio",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -d",
+    "start": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/welefen/canvas2video.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/welefen/canvas2video/issues"
+  },
+  "devDependencies": {
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "homepage": "https://github.com/welefen/canvas2video#readme"
+}
