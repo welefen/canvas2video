@@ -2,16 +2,12 @@
 
 Convert dynamic canvas to video, support merge audio (use FFmpeg.js)
 
-## Install
-
-```
-npm i canvas2video
-```
 
 ## Usage
 
-```js
-import { Canvas2Video } from "canvas2video";
+```html
+<script src="https://unpkg.com/canvas2video@1.0.2/dist/canvas2video.js"></script>
+<script>
 const canvas = document.querySelector("canvas");
 const instance = new Canvas2Video({
   canvas: canvas,
@@ -33,5 +29,6 @@ instance
     console.log("video url", url);
   })
   .catch((err) => console.error(err));
+</script>
 ```
 ## Demo
