@@ -1,15 +1,18 @@
 type Callback = (str: string) => void;
 
-export interface Options {
-  canvas?: HTMLCanvasElement;
-  mimeType?: string;
+export interface FFmpegWorkerOptions {
   corePath?: string;
   workerPath?: string;
   workerBlobURL?: string;
   logger?: Callback;
   progress?: Callback;
+}
+export interface Options {
+  canvas?: HTMLCanvasElement;
+  mimeType?: string;
   audio?: string;
   outVideoType?: string;
+  workerOptions?: FFmpegWorkerOptions;
 }
 
 export interface Deferred {
@@ -42,7 +45,7 @@ interface FFmpegWorker {
   terminate: () => Promise<void>
 }
 
-type FFmpegCreateWorker = (options: Options) => FFmpegWorker;
+type FFmpegCreateWorker = (options: FFmpegWorkerOptions) => FFmpegWorker;
 
 interface FFmpeg {
   createWorker: FFmpegCreateWorker

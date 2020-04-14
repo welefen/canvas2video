@@ -30,7 +30,7 @@ export class Canvas2Video {
       }
     };
     recorder.onstop = () => {
-      const url = URL.createObjectURL(new Blob(data, { type: "video/webm" }));
+      const url = URL.createObjectURL(new Blob(data, { type: this.config.mimeType }));
       this.deferred.resolve(url);
     };
     recorder.start();
@@ -44,9 +44,9 @@ export class Canvas2Video {
    * @param url 
    */
   private async convertVideoUrl(url: string) {
-    const { audio, outVideoType, mimeType } = this.config;
+    const { audio, outVideoType, mimeType, workerOptions } = this.config;
     const { createWorker } = window.FFmpeg;
-    const worker = createWorker(this.config);
+    const worker = createWorker(workerOptions || {});
     await worker.load();
     const type = mimeType.split('/')[1];
     await worker.write(`video.${type}`, url);
@@ -57,7 +57,7 @@ export class Canvas2Video {
       await worker.run(`-i video.${type} -i 1.${audioType} -c:v copy -c:a aac -strict experimental -shortest out.${outVideoType}`)
     } else {
       if (type !== outVideoType) {
-        await worker.run(`-i video.${type} video.${outVideoType}`);
+        await worker.run(`-i video.${type} -c:v copy video.${outVideoType}`);
       }
     }
     const { data } = await worker.read(`out.${outVideoType}`);
