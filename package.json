@@ -9,6 +9,7 @@
     "start": "webpack --watch",
     "prepublish": "npm run build"
   },
+  "keywords": ["canvas2video", "canvas", "video", "captureStream", "ffmpeg", "MediaRecorder"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/welefen/canvas2video.git"
