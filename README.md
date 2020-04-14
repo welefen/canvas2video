@@ -34,3 +34,7 @@ instance
 </script>
 ```
 ## Demo
+
+* [canvas to video](./demo/index.html)
+* [canvas to video, convert to mp4](./demo/mp4.html)
+* [canvas to video, convert to mp4, merge audio](./demo/audio.html)
