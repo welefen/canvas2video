@@ -73,7 +73,7 @@ export class Canvas2Video {
       return url;
     }
     if (!window.FFmpeg) {
-      const err = new Error('please load FFmpeg script file like `https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js`');
+      const err = new Error('please load FFmpeg script file like https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js');
       return Promise.reject(err);
     }
     return this.convertVideoUrl(url);
