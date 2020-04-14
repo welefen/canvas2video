@@ -8,13 +8,16 @@ const defaultOptions: Partial<Options> = {
 }
 
 export class Canvas2Video {
+  private deferred: Deferred;
+  private recorder: any;
   config: Options;
-  deferred: Deferred;
-  recorder: any;
   constructor(config: Options) {
     this.config = Object.assign({}, defaultOptions, config);
   }
-  startRecord() {
+  /**
+   * start to record canvas stream
+   */
+  startRecord(): void {
     const deferred: Deferred = {};
     deferred.promise = new Promise((resolve, reject) => {
       deferred.resolve = resolve;
@@ -36,14 +39,17 @@ export class Canvas2Video {
     recorder.start();
     this.recorder = recorder;
   }
-  stopRecord() {
+  /**
+   * stop to record canvas stream
+   */
+  stopRecord(): void {
     this.recorder.stop();
   }
   /**
    * merge audio and convert video type
    * @param url 
    */
-  private async convertVideoUrl(url: string) {
+  private async convertVideoUrl(url: string): Promise<string> {
     const { audio, outVideoType, mimeType, workerOptions } = this.config;
     const { createWorker } = window.FFmpeg;
     const worker = createWorker(workerOptions || {});
@@ -66,7 +72,10 @@ export class Canvas2Video {
     await worker.terminate();
     return mp4Url;
   }
-  async getStreamURL() {
+  /**
+   * get canvas stream url, created by URL.createObjectURL & Blob
+   */
+  async getStreamURL(): Promise<string> {
     const url = await this.deferred.promise;
     const { mimeType, audio, outVideoType } = this.config;
     if (mimeType === `video/${outVideoType}` && !audio) {
