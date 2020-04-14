@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -d",
-    "start": "webpack --watch"
+    "start": "webpack --watch",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
