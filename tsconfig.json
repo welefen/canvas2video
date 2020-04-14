@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "./lib/",
     "noImplicitAny": true,
     "module": "CommonJS",
     "target": "ES2019",
