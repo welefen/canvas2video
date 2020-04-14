@@ -1,5 +1,7 @@
 # canvas2video
 
+![](https://img.shields.io/npm/v/canvas2video.svg?style=flat-square)
+
 Convert dynamic canvas to video, support merge audio (use FFmpeg.js)
 
 ## Install
