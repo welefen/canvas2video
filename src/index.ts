@@ -60,7 +60,7 @@ export class Canvas2Video {
     if (audio) {
       const audioType = audio.split('.').pop();
       await worker.write(`1.${audioType}`, audio);
-      await worker.run(`-i video.${type} -i 1.${audioType} -c:v copy -c:a aac -strict experimental -shortest out.${outVideoType}`)
+      await worker.run(`-i video.${type} -i 1.${audioType} -af apad -map 0:v -map 1:a -c:v copy -shortest out.${outVideoType}`)
     } else {
       if (type !== outVideoType) {
         await worker.run(`-i video.${type} -c:v copy out.${outVideoType}`);
