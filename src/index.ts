@@ -80,7 +80,8 @@ export class Canvas2Video {
   async getStreamURL(): Promise<string> {
     const url = await this.deferred.promise;
     const { mimeType, audio, outVideoType } = this.config;
-    if (mimeType === `video/${outVideoType}` && !audio) {
+    const type = mimeType.split(';')[0].split('/')[1];
+    if (type === outVideoType && !audio) {
       return url;
     }
     if (!window.FFmpeg) {
