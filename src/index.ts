@@ -3,10 +3,10 @@ import { Options, Deferred, CanvasElement, MediaRecorderEvent } from './type';
 declare var MediaRecorder: any;
 
 const defaultOptions: Partial<Options> = {
-  mimeType: 'video/webm',
+  mimeType: 'video/webm;codecs=h264',
   outVideoType: 'mp4',
   transcodeOptions: '',
-  concatDemuxerOptions: '-af apad -map 0:v -map 1:a -shortest'
+  concatDemuxerOptions: '-c:v copy -af apad -map 0:v -map 1:a -shortest'
 }
 
 export class Canvas2Video {
