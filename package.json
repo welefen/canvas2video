@@ -1,6 +1,6 @@
 {
   "name": "canvas2video",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Convert dynamic canvas to video, support merge audio",
   "types": "lib/index.d.ts",
   "main": "index.js",
