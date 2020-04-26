@@ -13,6 +13,8 @@ export interface Options {
   audio?: string;
   outVideoType?: string;
   workerOptions?: FFmpegWorkerOptions;
+  transcodeOptions?: string;
+  concatDemuxerOptions?: string;
 }
 
 export interface Deferred {
@@ -42,7 +44,9 @@ interface FFmpegWorker {
   write: (name?: string, url?: string) => Promise<void>;
   run: (str?: string) => Promise<void>;
   read: (str?: string) => Promise<FFmpegWorkerReadData>;
-  terminate: () => Promise<void>
+  terminate: () => Promise<void>;
+  transcode: (...args: string[]) => Promise<void>;
+  concatDemuxer:(input: string[], out: string, options?: string) => Promise<void>;
 }
 
 type FFmpegCreateWorker = (options: FFmpegWorkerOptions) => FFmpegWorker;

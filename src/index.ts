@@ -4,7 +4,9 @@ declare var MediaRecorder: any;
 
 const defaultOptions: Partial<Options> = {
   mimeType: 'video/webm',
-  outVideoType: 'mp4'
+  outVideoType: 'mp4',
+  transcodeOptions: '',
+  concatDemuxerOptions: '-af apad -map 0:v -map 1:a -shortest'
 }
 
 export class Canvas2Video {
@@ -50,7 +52,7 @@ export class Canvas2Video {
    * @param url 
    */
   private async convertVideoUrl(url: string): Promise<string> {
-    const { audio, outVideoType, mimeType, workerOptions } = this.config;
+    const { audio, outVideoType, mimeType, workerOptions, transcodeOptions, concatDemuxerOptions } = this.config;
     const { createWorker } = window.FFmpeg;
     const worker = createWorker(workerOptions || {});
     await worker.load();
@@ -60,10 +62,10 @@ export class Canvas2Video {
     if (audio) {
       const audioType = audio.split('.').pop();
       await worker.write(`1.${audioType}`, audio);
-      await worker.run(`-i video.${type} -i 1.${audioType} -af apad -map 0:v -map 1:a -c:v copy -shortest out.${outVideoType}`)
+      await worker.concatDemuxer([`video.${type}`, `1.${audioType}`], `out.${outVideoType}`, concatDemuxerOptions);
     } else {
       if (type !== outVideoType) {
-        await worker.run(`-i video.${type} -c:v copy out.${outVideoType}`);
+        await worker.transcode(`video.${type} `, `out.${outVideoType}`, transcodeOptions);
       }
     }
     const { data } = await worker.read(`out.${outVideoType}`);
