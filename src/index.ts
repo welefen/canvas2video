@@ -56,7 +56,7 @@ export class Canvas2Video {
     const { createWorker } = window.FFmpeg;
     const worker = createWorker(workerOptions || {});
     await worker.load();
-    const type = mimeType.split('/')[1];
+    const type = mimeType.split(';')[0].split('/')[1];
     await worker.write(`video.${type}`, url);
 
     if (audio) {
