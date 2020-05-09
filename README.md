@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/npm/v/canvas2video.svg?style=flat-square)
 
-Convert dynamic canvas to video, support merge audio (use [FFmpeg.js](https://github.com/ffmpegjs/ffmpeg.js))
+Convert dynamic canvas to video, support merge audio (use [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm))
 
 ## Install
 
@@ -19,13 +19,11 @@ import { Canvas2Video } from "canvas2video";
 ```html
 <script src="https://unpkg.com/canvas2video@1.0.2/dist/canvas2video.js"></script>
 <!--if convert video type or merge audio, must be include ffmpeg.js in html file -->
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
 <script>
   const canvas = document.querySelector("canvas");
   const instance = new Canvas2Video({
     canvas: canvas,
-    mimeType: "video/webm",
-    outVideoType: "mp4",
     workerOptions: {
       // logger: str => console.error(str),
     },
