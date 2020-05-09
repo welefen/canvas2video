@@ -62,7 +62,7 @@ export class Canvas2Video {
     if (audio) {
       const audioType = audio.split('.').pop();
       await worker.write(`1.${audioType}`, audio);
-      await worker.concatDemuxer([`video.${type}`, `1.${audioType}`], `out.${outVideoType}`, concatDemuxerOptions);
+      await worker.run(`-i video.${type} -i 1.${audioType} ${concatDemuxerOptions} out.${outVideoType}`);
     } else {
       if (type !== outVideoType) {
         await worker.transcode(`video.${type} `, `out.${outVideoType}`, transcodeOptions);

@@ -32,7 +32,7 @@
         ></video>
       </div>
     </div>
-    <script src="http://s8.qhres.com/static/f5d328097dd65d47/canvas2video.js"></script>
+    <script src="../dist/canvas2video.js"></script>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js"></script>
     <script>
       const { Scene, Label, Group } = spritejs;
@@ -90,6 +90,9 @@
       const canvas2videoInstance = new Canvas2Video({
         canvas: document.querySelector("canvas"),
         outVideoType: "mp4",
+        workerOptions: {
+          // corePath: 'https://unpkg.com/@ffmpeg/core@0.6.0/ffmpeg-core.js'
+        }
       });
       canvas2videoInstance.startRecord();
 
