@@ -17,7 +17,7 @@ import { Canvas2Video } from "canvas2video";
 ```
 
 ```html
-<script src="https://unpkg.com/canvas2video@1.0.2/dist/canvas2video.js"></script>
+<script src="https://unpkg.com/canvas2video/dist/canvas2video.js"></script>
 <!--if convert video type or merge audio, must be include ffmpeg.js in html file -->
 <script src="https://unpkg.com/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
 <script>
