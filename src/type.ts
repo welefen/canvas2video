@@ -43,8 +43,7 @@ interface FFmpegWorker {
   load: () => Promise<void>;
   write: (name?: string, url?: string) => Promise<void>;
   run: (str?: string) => Promise<void>;
-  read: (str?: string) => Promise<FFmpegWorkerReadData>;
-  terminate: () => Promise<void>;
+  read: (str?: string) => Uint8Array;
   transcode: (...args: string[]) => Promise<void>;
   concatDemuxer:(input: string[], out: string, options?: string) => Promise<void>;
 }
@@ -52,7 +51,7 @@ interface FFmpegWorker {
 type FFmpegCreateWorker = (options: FFmpegWorkerOptions) => FFmpegWorker;
 
 interface FFmpeg {
-  createWorker: FFmpegCreateWorker
+  createFFmpeg: FFmpegCreateWorker
 }
 
 declare global {

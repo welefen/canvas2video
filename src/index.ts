@@ -53,25 +53,24 @@ export class Canvas2Video {
    */
   private async convertVideoUrl(url: string): Promise<string> {
     const { audio, outVideoType, mimeType, workerOptions, transcodeOptions, concatDemuxerOptions } = this.config;
-    const { createWorker } = window.FFmpeg;
-    const worker = createWorker(workerOptions || {});
-    await worker.load();
+    const { createFFmpeg } = window.FFmpeg;
+    const ffmpeg = createFFmpeg(workerOptions || {});
+    await ffmpeg.load();
     const type = mimeType.split(';')[0].split('/')[1];
-    await worker.write(`video.${type}`, url);
+    await ffmpeg.write(`video.${type}`, url);
 
     if (audio) {
       const audioType = audio.split('.').pop();
-      await worker.write(`1.${audioType}`, audio);
-      await worker.run(`-i video.${type} -i 1.${audioType} ${concatDemuxerOptions} out.${outVideoType}`);
+      await ffmpeg.write(`1.${audioType}`, audio);
+      await ffmpeg.run(`-i video.${type} -i 1.${audioType} ${concatDemuxerOptions} out.${outVideoType}`);
     } else {
       if (type !== outVideoType) {
-        await worker.transcode(`video.${type} `, `out.${outVideoType}`, transcodeOptions);
+        await ffmpeg.transcode(`video.${type} `, `out.${outVideoType}`, transcodeOptions);
       }
     }
-    const { data } = await worker.read(`out.${outVideoType}`);
-    const blob = new Blob([data], { type: `video/${outVideoType}` })
+    const data  = await ffmpeg.read(`out.${outVideoType}`);
+    const blob = new Blob([data.buffer], { type: `video/${outVideoType}` })
     const mp4Url = URL.createObjectURL(blob);
-    await worker.terminate();
     return mp4Url;
   }
   /**
