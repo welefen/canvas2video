@@ -32,5 +32,8 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
-  "homepage": "https://github.com/welefen/canvas2video#readme"
+  "homepage": "https://github.com/welefen/canvas2video#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }
