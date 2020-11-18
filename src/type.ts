@@ -18,9 +18,9 @@ export interface Options {
 }
 
 export interface Deferred {
-  promise?: Promise<any>;
-  resolve?: (value?: any) => void;
-  reject?: (reason?: any) => void;
+  promise?: Promise<Blob>;
+  resolve?: (value?: Blob) => void;
+  reject?: (reason?: Error) => void;
 }
 
 export interface CanvasElement extends HTMLCanvasElement {
@@ -41,9 +41,8 @@ interface FFmpegWorkerReadData {
 
 interface FFmpegWorker {
   load: () => Promise<void>;
-  write: (name?: string, url?: string) => Promise<void>;
-  run: (str?: string) => Promise<void>;
-  read: (str?: string) => Uint8Array;
+  FS: (...args: any) => any;
+  run: (...args: any) => Promise<void>;
   transcode: (...args: string[]) => Promise<void>;
   concatDemuxer:(input: string[], out: string, options?: string) => Promise<void>;
 }
@@ -51,7 +50,8 @@ interface FFmpegWorker {
 type FFmpegCreateWorker = (options: FFmpegWorkerOptions) => FFmpegWorker;
 
 interface FFmpeg {
-  createFFmpeg: FFmpegCreateWorker
+  createFFmpeg: FFmpegCreateWorker,
+  fetchFile: (...args: any) => Promise<any>
 }
 
 declare global {
