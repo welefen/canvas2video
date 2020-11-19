@@ -33,12 +33,6 @@ export interface MediaRecorderEvent {
   }
 }
 
-
-
-interface FFmpegWorkerReadData {
-  data: any
-}
-
 interface FFmpegWorker {
   load: () => Promise<void>;
   FS: (...args: any) => any;
